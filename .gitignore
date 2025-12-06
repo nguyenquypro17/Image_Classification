@@ -1,0 +1,53 @@
+# --- Python & Hệ thống ---
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+Thumbs.db
+
+# --- Môi trường ảo (Bắt buộc ignore) ---
+venv/
+env/
+.venv/
+.conda/
+
+# --- Jupyter Notebook ---
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# --- Cấu hình IDE (VS Code, PyCharm) ---
+.vscode/
+.idea/
+
+# --- QUAN TRỌNG VỚI AI PROJECT ---
+
+# 1. Bỏ qua Model weights & Checkpoints (File thường rất nặng)
+*.pt
+*.pth
+*.h5
+*.keras
+*.ckpt
+*.onnx
+*.pkl
+models/
+saved_models/
+
+# 2. Bỏ qua Dữ liệu (Dataset)
+data/
+dataset/
+datasets/
+raw_data/
+*.csv
+*.zip
+*.tar.gz
+
+# 3. Bỏ qua Logs & Kết quả training
+logs/
+runs/
+wandb/
+results/
+
+# 4. Bảo mật (Tuyệt đối không đẩy file chứa API Key)
+.env
+config.json
+secrets.yaml
