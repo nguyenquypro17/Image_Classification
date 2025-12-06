@@ -72,12 +72,12 @@ class Resnet(nn.Module):
 
         return out
     
-def Resnet20():
+def ResNet20():
     return Resnet(BasicBlock, [3, 3, 3]) 
 
-def Resnet56():
+def ResNet56():
     return Resnet(BasicBlock, [9, 9, 9])
 
-def Resnet110():
+def ResNet110():
     return Resnet(BasicBlock, [18, 18, 18])
 
