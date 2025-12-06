@@ -29,7 +29,6 @@ env/
 *.ckpt
 *.onnx
 *.pkl
-models/
 saved_models/
 
 # 2. Bỏ qua Dữ liệu (Dataset)
