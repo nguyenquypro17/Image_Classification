@@ -174,9 +174,14 @@ def train_model(model, model_name, trainloader, valloader, testloader, device,
     
     os.makedirs(save_dir, exist_ok=True)
     
+    # Tạo tên subfolder dựa vào cấu hình
+    config_name = f'{optimizer_name}_lr{lr}_wd{weight_decay}'
+    config_dir = os.path.join(save_dir, model_name, config_name)
+    os.makedirs(config_dir, exist_ok=True)
+    
     criterion = nn.CrossEntropyLoss()
     optimizer = get_optimizer(optimizer_name, model.parameters(), lr=lr, weight_decay=weight_decay)
-    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[80, 120], gamma=0.1)
+    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[80, 150], gamma=0.1)
     
     best_val_acc = 0.0
     best_epoch = 0
@@ -205,7 +210,7 @@ def train_model(model, model_name, trainloader, valloader, testloader, device,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'best_val_acc': best_val_acc,
-            }, os.path.join(save_dir, f'{model_name}_best.pth'))
+            }, os.path.join(config_dir, f'{model_name}_best.pth'))
         
         current_lr = optimizer.param_groups[0]['lr']
         
@@ -213,11 +218,11 @@ def train_model(model, model_name, trainloader, valloader, testloader, device,
     print(f'\nTraining finished!')
     
     # Load best model
-    checkpoint = torch.load(os.path.join(save_dir, f'{model_name}_best.pth'))
+    checkpoint = torch.load(os.path.join(config_dir, f'{model_name}_best.pth'))
     model.load_state_dict(checkpoint['model_state_dict'])
     
     # Plot training curves
-    plot_training_curves(history, model_name, save_dir)
+    plot_training_curves(history, model_name, config_dir)
     
     # Test on test set once with best model
     test_loss, test_acc = test_epoch(model, testloader, criterion, device)
