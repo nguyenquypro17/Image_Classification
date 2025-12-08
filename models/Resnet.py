@@ -3,10 +3,10 @@ import torch.nn as nn
 
 def weight_init(m):
     if isinstance(m, nn.Conv2d):
-        nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+       nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
     elif isinstance(m, nn.BatchNorm2d):
         nn.init.constant_(m.weight, 1)
-        nn.init.constant_(m.bias, 0)    
+        nn.init.constant_(m.bias, 0)     
 
 class BasicBlock(nn.Module):
     def __init__(self, inplane, plane, stride = 1): # inplane: số kênh đầu vào block, plane: số kênh của conv trong block
@@ -17,9 +17,9 @@ class BasicBlock(nn.Module):
         self.conv2 = nn.Conv2d(plane, plane, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn2 = nn.BatchNorm2d(plane)
         self.shortcut = nn.Sequential()
-        if stride == 2 or inplane != plane:
+        if stride != 1 or inplane != plane:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(inplane, plane, kernel_size=1, stride=2, bias=False),
+                nn.Conv2d(inplane, plane, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(plane)
             ) 
 

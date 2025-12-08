@@ -1,0 +1,4 @@
+# vgg 16 optim.SGD(model.parameters(), 
+                      lr=0.1,           # Learning rate cao ban đầu
+                      momentum=0.9, 
+                      weight_decay=5e-4)

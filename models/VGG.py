@@ -1,6 +1,19 @@
 import torch 
 from torch import nn
 
+def weight_init(m):
+    for m in m.modules():
+        if isinstance(m, nn.Conv2d):
+            nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+            if m.bias is not None:
+                nn.init.constant_(m.bias, 0)
+        elif isinstance(m, nn.BatchNorm2d):
+            nn.init.constant_(m.weight, 1)
+            nn.init.constant_(m.bias, 0)
+        elif isinstance(m, nn.Linear):
+            nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+            nn.init.constant_(m.bias, 0) 
+
 class VGG16(nn.Module):
     def __init__(self):
         super(VGG16, self).__init__()
@@ -72,6 +85,8 @@ class VGG16(nn.Module):
             nn.Dropout(p=0.5),
             nn.Linear(512, 10)
         )
+        
+        self.apply(weight_init)
     
     def forward(self, x):
         x = self.block1(x)
