@@ -305,7 +305,8 @@ def main():
     
     print('='*80)
     for name, result in results.items():
-        print(f'Accuracy: {result["test_acc"]:.2f}% | F1: {result["metrics"]["f1"]:.2f}% | Precision: {result["metrics"]["precision"]:.2f}% | Recall: {result["metrics"]["recall"]:.2f}% | Time: {result["total_time"]/60:.2f}min')    print('='*80)
+        print(f'Accuracy: {result["test_acc"]:.2f}% | F1: {result["metrics"]["f1"]:.2f}% | Precision: {result["metrics"]["precision"]:.2f}% | Recall: {result["metrics"]["recall"]:.2f}% | Time: {result["total_time"]/60:.2f}min')
+    print('='*80)
 
 
 if __name__ == '__main__':
