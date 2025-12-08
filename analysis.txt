@@ -1,0 +1,16 @@
+1, !python train.py --model ResNet20
+ --optimizer sgd
+  --epochs 1 
+  --device cuda
+   --weight_decay 1e-4 
+   --augmentation standard  
+   --lr 0.1
+ --batch_size 128
+
+
+2, vgg 16 optim.SGD(model.parameters(), 
+                      lr=0.1,           
+                      momentum=0.9, 
+                      weight_decay=5e-4)
+
+

@@ -168,7 +168,7 @@ def plot_training_curves(history, model_name, save_dir='checkpoints'):
 
 
 def train_model(model, model_name, trainloader, valloader, testloader, device, 
-                epochs=160, lr=0.1, optimizer_name='sgd', save_dir='checkpoints',
+                epochs=160, lr=0.1, optimizer_name='sgd', save_dir='/kaggle/working/checkpoints',
                 weight_decay=1e-4, batch_size=128):
     """Train một model hoàn chỉnh"""
     
@@ -181,7 +181,7 @@ def train_model(model, model_name, trainloader, valloader, testloader, device,
     
     criterion = nn.CrossEntropyLoss()
     optimizer = get_optimizer(optimizer_name, model.parameters(), lr=lr, weight_decay=weight_decay)
-    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[80, 150], gamma=0.1)
+    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[80, 120], gamma=0.1)
     
     best_val_acc = 0.0
     best_epoch = 0
@@ -205,12 +205,7 @@ def train_model(model, model_name, trainloader, valloader, testloader, device,
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             best_epoch = epoch
-            torch.save({
-                'epoch': epoch,
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'best_val_acc': best_val_acc,
-            }, os.path.join(config_dir, f'{model_name}_best.pth'))
+            # Không lưu model nữa - chỉ cần best_val_acc để tracking
         
         current_lr = optimizer.param_groups[0]['lr']
         
@@ -261,6 +256,8 @@ def main():
     parser.add_argument('--model', type=str, required=True,
                         choices=['ResNet20', 'ResNet56', 'VGG16'],
                         help='Model to train: ResNet20, ResNet56, VGG16')
+    parser.add_argument('--save_dir', type=str, default='/kaggle/working/checkpoints',
+                        help='Directory to save checkpoints and results')
     args = parser.parse_args()
     
     # Setup device
@@ -299,7 +296,8 @@ def main():
         lr=args.lr,
         optimizer_name=args.optimizer,
         weight_decay=args.weight_decay,
-        batch_size=args.batch_size
+        batch_size=args.batch_size,
+        save_dir=args.save_dir
     )
     results[model_name] = result
     
