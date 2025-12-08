@@ -217,9 +217,8 @@ def train_model(model, model_name, trainloader, valloader, testloader, device,
     total_time = time.time() - start_total_time
     print(f'\nTraining finished!')
     
-    # Load best model
-    checkpoint = torch.load(os.path.join(config_dir, f'{model_name}_best.pth'))
-    model.load_state_dict(checkpoint['model_state_dict'])
+    # Model vẫn ở trong memory, không cần load lại
+    # torch.save() chỉ để lưu lại cho lần sau dùng
     
     # Plot training curves
     plot_training_curves(history, model_name, config_dir)
@@ -306,8 +305,7 @@ def main():
     
     print('='*80)
     for name, result in results.items():
-        print(f'Accuracy: {result["test_acc"]:.2f}% | F1: {result["metrics"]["f1"]:.2f}% | Precision: {result["metrics"]["precision"]:.2f}% | Recall: {result["metrics"]["recall"]:.2f}% | Time: {result["total_time"]/60:.2f}min')
-    print('='*80)
+        print(f'Accuracy: {result["test_acc"]:.2f}% | F1: {result["metrics"]["f1"]:.2f}% | Precision: {result["metrics"]["precision"]:.2f}% | Recall: {result["metrics"]["recall"]:.2f}% | Time: {result["total_time"]/60:.2f}min')    print('='*80)
 
 
 if __name__ == '__main__':
