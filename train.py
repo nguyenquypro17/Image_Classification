@@ -254,8 +254,8 @@ def main():
     parser.add_argument('--weight_decay', type=float, required=True,
                         help='Weight decay')
     parser.add_argument('--model', type=str, required=True,
-                        choices=['ResNet20', 'ResNet56', 'VGG16'],
-                        help='Model to train: ResNet20, ResNet56, VGG16')
+                        choices=['ResNet20', 'ResNet56', 'Resnet110', 'VGG16', 'VGG19'],
+                        help='Model to train: ResNet20, ResNet56, Resnet110, VGG16, VGG19')
     parser.add_argument('--save_dir', type=str, default='/kaggle/working/checkpoints',
                         help='Directory to save checkpoints and results')
     args = parser.parse_args()
