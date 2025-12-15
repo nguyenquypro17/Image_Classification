@@ -9,7 +9,7 @@ import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from utils.data_loader import get_cifar10_loaders
 from models.Resnet import ResNet20, ResNet56, ResNet110
-from models.VGG import VGG16
+from models.VGG import VGG16, VGG19 
 
 def train_epoch(model, trainloader, criterion, optimizer, device):
     """Train 1 epoch trả về train loss và train accuracy"""
@@ -202,18 +202,17 @@ def train_model(model, model_name, trainloader, valloader, testloader, device,
         
         scheduler.step()
         
+        # Tracking best validation accuracy
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             best_epoch = epoch
-            # Không lưu model nữa - chỉ cần best_val_acc để tracking
+            # Bật lại tính năng lưu model (Quan trọng)
+            torch.save(model.state_dict(), os.path.join(config_dir, f'{model_name}_best.pth'))
         
         current_lr = optimizer.param_groups[0]['lr']
         
     total_time = time.time() - start_total_time
     print(f'\nTraining finished!')
-    
-    # Model vẫn ở trong memory, không cần load lại
-    # torch.save() chỉ để lưu lại cho lần sau dùng
     
     # Plot training curves
     plot_training_curves(history, model_name, config_dir)
@@ -253,6 +252,7 @@ def main():
                         help='Batch size')
     parser.add_argument('--weight_decay', type=float, required=True,
                         help='Weight decay')
+    # Cập nhật danh sách choices cho argument model
     parser.add_argument('--model', type=str, required=True,
                         choices=['ResNet20', 'ResNet56', 'ResNet110', 'VGG16', 'VGG19'],
                         help='Model to train: ResNet20, ResNet56, ResNet110, VGG16, VGG19')
@@ -270,17 +270,23 @@ def main():
         augmentation=args.augmentation
     )
     
-    # Định nghĩa các models
+    # Cập nhật Dictionary chứa các Model
     models_dict = {
         'ResNet20': ResNet20(),
         'ResNet56': ResNet56(),
-        'VGG16': VGG16()
+        'ResNet110': ResNet110(), # Đã thêm
+        'VGG16': VGG16(),
+        'VGG19': VGG19()          # Đã thêm
     }
     
     results = {}
     
     # Train single model
     model_name = args.model
+    
+    if model_name not in models_dict:
+        raise ValueError(f"Model {model_name} chưa được định nghĩa trong models_dict!")
+
     model = models_dict[model_name].to(device)
     num_params = sum(p.numel() for p in model.parameters())
     print(f'{model_name} parameters: {num_params/1e6:.2f}M')
