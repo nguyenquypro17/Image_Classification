@@ -75,7 +75,7 @@ class VGG16(nn.Module):
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(512, 512),
+            nn.Linear(512 * 4 * 4, 512),
             nn.ReLU(inplace=True),
             nn.Dropout(p=0.5),
             nn.Linear(512, 512),
@@ -167,7 +167,7 @@ class VGG19(nn.Module):
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(512, 512),
+            nn.Linear(512 * 4 * 4, 512),
             nn.ReLU(),
             nn.Dropout(p=0.5),
             nn.Linear(512, 512),
