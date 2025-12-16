@@ -2,7 +2,6 @@ import torch
 from torch import nn
 
 def weight_init(m):
-    for m in m.modules():
         if isinstance(m, nn.Conv2d):
             nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
             if m.bias is not None:
