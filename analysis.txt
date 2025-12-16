@@ -14,8 +14,6 @@ Training curve saved to /kaggle/working/checkpoints/ResNet20/sgd_lr0.1_wd0.0001/
 Accuracy: 91.75% | F1: 91.75% | Precision: 91.76% | Recall: 91.75% | Time: 38.51min
 ================================================================================
 
-
-
 2, --model ResNet56 \
                  --optimizer sgd \
                  --epochs 200 \
@@ -32,5 +30,19 @@ Training curve saved to /kaggle/working/checkpoints/ResNet56/sgd_lr0.1_wd0.0001/
 Accuracy: 93.05% | F1: 93.04% | Precision: 93.05% | Recall: 93.05% | Time: 81.13min
 ================================================================================
 
+3, --model ResNet110 \
+                 --optimizer sgd \
+                 --epochs 200 \
+                 --device cuda \
+                 --weight_decay 1e-4 \
+                 --augmentation standard \
+                 --lr 0.1 \
+                 --batch_size 128
+ResNet110 parameters: 1.73M
 
+Training finished!
+Training curve saved to /kaggle/working/checkpoints/ResNet110/sgd_lr0.1_wd0.0001/ResNet110_training_curve.png
+================================================================================
+Accuracy: 93.29% | F1: 93.27% | Precision: 93.28% | Recall: 93.29% | Time: 152.86min
+================================================================================
 
