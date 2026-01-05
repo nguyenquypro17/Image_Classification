@@ -174,6 +174,7 @@ class VGG19(nn.Module):
             nn.Dropout(p=0.5),
             nn.Linear(512, 10)
         )
+        self.apply(weight_init)
     
     def forward(self, x):
         x = self.block1(x)
